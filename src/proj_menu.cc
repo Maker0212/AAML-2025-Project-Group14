@@ -14,44 +14,43 @@
  * limitations under the License.
  */
 
- #include "proj_menu.h"
+#include "proj_menu.h"
 
- #include <stdio.h>
- 
- #include "cfu.h"
- #include "menu.h"
- #include "wav2letter/wav2letter.h"
- 
- #include "third_party/mlperf_tiny/api/internally_implemented.h"
- #include "third_party/mlperf_tiny/api/submitter_implemented.h"
- 
- namespace {
- 
+#include <stdio.h>
 
- void do_enter_mlperf_tiny(void){
-   ee_benchmark_initialize(); 
-   th_getchar();
-   while (1) {
-     int c;
-     c = th_getchar(); 
-     #ifndef MLPERF_TINY_NO_ECHO
-       putchar(c); 
-     #endif
-     ee_serial_callback(c); 
-   }
- }
- 
- struct Menu MENU = {
-     "Project Menu",
-     "project",
-     {
-         MENU_ITEM('w', "Wav2letter Tests", wav2letter_pruned_menu),
- 
-         MENU_ITEM('b', "Enter MLPerf Tiny Benchmark Interface", do_enter_mlperf_tiny),
-         MENU_END,
-     },
- };
- 
- };  // anonymous namespace
- 
- extern "C" void do_proj_menu() { menu_run(&MENU); }
+#include "cfu.h"
+#include "menu.h"
+#include "third_party/mlperf_tiny/api/internally_implemented.h"
+#include "third_party/mlperf_tiny/api/submitter_implemented.h"
+#include "wav2letter/wav2letter.h"
+
+namespace {
+
+void do_enter_mlperf_tiny(void) {
+  ee_benchmark_initialize();
+  th_getchar();
+  while (1) {
+    int c;
+    c = th_getchar();
+#ifndef MLPERF_TINY_NO_ECHO
+    putchar(c);
+#endif
+    ee_serial_callback(c);
+  }
+}
+
+struct Menu MENU = {
+    "Project Menu",
+    "project",
+    {
+        MENU_ITEM('w', "Wav2letter Tests", wav2letter_pruned_menu),
+
+        MENU_ITEM('b', "Enter MLPerf Tiny Benchmark Interface",
+                  do_enter_mlperf_tiny),
+        MENU_END,
+    },
+};
+
+};  // anonymous namespace
+
+extern "C" void do_proj_menu() { menu_run(&MENU); }
